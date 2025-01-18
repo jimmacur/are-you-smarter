@@ -9,10 +9,6 @@ import {ResponseModalComponent} from '../response-modal/response-modal.component
   styleUrls: ['./question.component.css']
 })
 export class QuestionComponent {
-  // then I want to display a message if the answer is correct or incorrect
-  // then I want to display the next question if they got it right
-  // if they got it wrong, I want to display the correct answer, tell them the game is over and ask if they want to play again
-  // if they want to play again, I want to reset the game and start over
 
   // State
   // ********************
@@ -25,6 +21,8 @@ export class QuestionComponent {
   showModal = false;
   modalTitle = '';
   modalMessage = '';
+  headerText = 'Are you smarter than a 1st grader?';
+
 
   // Methods
   // ********************
@@ -35,37 +33,43 @@ export class QuestionComponent {
 
   getQuestion() {
     let questionPool = [];
+    let gradeLevel = "";
 
     switch (this.questionCount) {
       case 1:
         questionPool = this.firstGradeQuestions;
+        gradeLevel = "1st";
         break;
       case 2:
         questionPool = this.secondGradeQuestions;
+        gradeLevel = "2nd";
         break;
       case 3:
         questionPool = this.thirdGradeQuestions;
+        gradeLevel = "3rd";
         break;
       case 4:
         questionPool = this.fourthGradeQuestions;
+        gradeLevel = "4th";
         break;
       case 5:
         questionPool = this.fifthGradeQuestions;
+        gradeLevel = "5th";
         break;
       default:
         console.log("No more questions.");
         return;
     }
 
+    this.headerText = `Are you smarter than a ${gradeLevel} grader?`;
+
     const randomIndex = Math.floor(Math.random() * questionPool.length);
     this.currentQuestion = questionPool[randomIndex];
-    console.log("current question:", this.currentQuestion);
 
     this.shuffledAnswers = this.shuffle([
       this.currentQuestion.correctAnswer,
       ...this.currentQuestion.incorrectAnswers
     ]);
-    console.log("Shuffled Answers:", this.shuffledAnswers);
   }
 
   shuffle(array: any[]): any[] {
