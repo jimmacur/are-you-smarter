@@ -7,3 +7,49 @@
 .question-header {
   text-decoration: underline;
 }
+
+.question-container {
+  background-color:rgb(187, 199, 251);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.answers-container button {
+  background-color: #f9f9f9;
+  padding: 10px 20px;
+  margin: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.answers-container button:hover {
+  background-color:rgb(251, 200, 158);
+}
+
+.answers-container button.selected {
+  background-color:rgb(255, 166, 93);
+}
+
+.submit-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  color: #666;
+}
+
+.submit-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  width: fit-content;
+}
+

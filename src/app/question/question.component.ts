@@ -8,11 +8,6 @@ import { NgFor } from '@angular/common';
   styleUrl: './question.component.css'
 })
 export class QuestionComponent {
-  // at this point i am getting a random 1st grade question and the answers are shuffled
-  // they are being displayed on the screen
-  // i need to make them be selectable on click
-  // then I want a separate button to click submit so it is not too easy to accidentally submit
-  // then I want to check if the answer is correct
   // then I want to display a message if the answer is correct or incorrect
   // then I want to display the next question if they got it right
   // if they got it wrong, I want to display the correct answer, tell them the game is over and ask if they want to play again
@@ -85,7 +80,9 @@ export class QuestionComponent {
     this.selectedAnswer = null;
   }
 
-  // Data
+  // Data/state
+  // ********************
+
   questionCount = 1;
   currentQuestion: any;
   shuffledAnswers: string[] = [];
