@@ -1,21 +1,28 @@
 import { Component } from '@angular/core';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-question',
-  imports: [],
+  imports: [NgFor],
   templateUrl: './question.component.html',
   styleUrl: './question.component.css'
 })
 export class QuestionComponent {
-  // this is where the questions and answers will be stored
-  // i want objects for individual grade questions and answers like 5 for 1st, 5 for 2nd, 5 for 3rd, 5 for 4th, 5 for 5th
-  // The final 6th grade question will come from an API call
-  //
-  // 1st question will be a random question from 1st grade
-  // 2nd question will be a random question from 2nd grade etc through 5th grade
-  // 6th question will be from the API
+  // at this point i am getting a random 1st grade question and the answers are shuffled
+  // they are being displayed on the screen
+  // i need to make them be selectable on click
+  // then I want a separate button to click submit so it is not too easy to accidentally submit
+  // then I want to check if the answer is correct
+  // then I want to display a message if the answer is correct or incorrect
+  // then I want to display the next question if they got it right
+  // if they got it wrong, I want to display the correct answer, tell them the game is over and ask if they want to play again
+  // if they want to play again, I want to reset the game and start over
+
+
+
   questionCount = 1;
   currentQuestion: any;
+  shuffledAnswers: string[] = [];
 
   ngOnInit() {
     this.getQuestion();
@@ -48,21 +55,29 @@ export class QuestionComponent {
     const randomIndex = Math.floor(Math.random() * questionPool.length);
     this.currentQuestion = questionPool[randomIndex];
     console.log("current question:", this.currentQuestion);
-  }
 
-  getAnswers() {
-    const answers = [
+    this.shuffledAnswers = this.shuffle([
       this.currentQuestion.correctAnswer,
       ...this.currentQuestion.incorrectAnswers
-    ];
-
-    return this.shuffle(answers);
+    ]);
+    console.log("Shuffled Answers:", this.shuffledAnswers);
   }
+
+  // getAnswers() {
+  //   console.log("Incorrect Answers:", this.currentQuestion.incorrectAnswers);
+    
+  //   const answers = [
+  //     this.currentQuestion.correctAnswer,
+  //     ...this.currentQuestion.incorrectAnswers
+  //   ];
+
+  //   return this.shuffle(answers);
+  // }
 
   shuffle(array: any[]): any[] {
     for (let i = array.length - 1; i > 0; i--) {
-      const randomIndex = Math.floor(Math.random() * (i + 1)); // Generate a random index
-      [array[i], array[randomIndex]] = [array[randomIndex], array[i]]; // Swap elements
+      const randomIndex = Math.floor(Math.random() * (i + 1)); // 
+      [array[i], array[randomIndex]] = [array[randomIndex], array[i]];
     }
     return array;
   }

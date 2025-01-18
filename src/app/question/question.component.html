@@ -3,10 +3,7 @@
   <div class="question-container">
     <h2>{{ currentQuestion.question }}</h2>
     <div>
-      <button>{{ getAnswers()[0] }}</button>
-      <button>{{ getAnswers()[1] }}</button>
-      <button>{{ getAnswers()[2] }}</button>
-      <button>{{ getAnswers()[3] }}</button>
+      <button *ngFor="let answer of shuffledAnswers">{{ answer }}</button>
     </div>
   </div>
 </div>
