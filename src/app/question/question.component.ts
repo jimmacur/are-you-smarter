@@ -18,11 +18,8 @@ export class QuestionComponent {
   // if they got it wrong, I want to display the correct answer, tell them the game is over and ask if they want to play again
   // if they want to play again, I want to reset the game and start over
 
-
-
-  questionCount = 1;
-  currentQuestion: any;
-  shuffledAnswers: string[] = [];
+  // Methods
+  // ********************
 
   ngOnInit() {
     this.getQuestion();
@@ -63,17 +60,6 @@ export class QuestionComponent {
     console.log("Shuffled Answers:", this.shuffledAnswers);
   }
 
-  // getAnswers() {
-  //   console.log("Incorrect Answers:", this.currentQuestion.incorrectAnswers);
-    
-  //   const answers = [
-  //     this.currentQuestion.correctAnswer,
-  //     ...this.currentQuestion.incorrectAnswers
-  //   ];
-
-  //   return this.shuffle(answers);
-  // }
-
   shuffle(array: any[]): any[] {
     for (let i = array.length - 1; i > 0; i--) {
       const randomIndex = Math.floor(Math.random() * (i + 1)); // 
@@ -81,6 +67,29 @@ export class QuestionComponent {
     }
     return array;
   }
+
+  selectAnswer(answer: string) {
+    this.selectedAnswer = answer;
+  }
+
+  checkAnswer() {
+    if (this.selectedAnswer === this.currentQuestion.correctAnswer) {
+      console.log("Correct!");
+      this.questionCount++;
+      this.getQuestion();
+    } else {
+      console.log("Incorrect!");
+      console.log("Correct Answer:", this.currentQuestion.correctAnswer);
+    }
+
+    this.selectedAnswer = null;
+  }
+
+  // Data
+  questionCount = 1;
+  currentQuestion: any;
+  shuffledAnswers: string[] = [];
+  selectedAnswer: string | null = null;
 
   firstGradeQuestions = [
     {
