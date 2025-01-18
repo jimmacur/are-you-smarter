@@ -19,5 +19,12 @@
       Submit
     </button>
   </div>
+  <app-response-modal 
+    [showModal]="showModal"
+    [title]="modalTitle"
+    [message]="modalMessage"
+    (onClose)="resetGame()"
+    (onNext)="nextQuestion()"
+  ></app-response-modal>
 </div>
 

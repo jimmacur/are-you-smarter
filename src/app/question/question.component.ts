@@ -1,17 +1,30 @@
 import { Component } from '@angular/core';
 import { NgFor } from '@angular/common';
+import {ResponseModalComponent} from '../response-modal/response-modal.component';
 
 @Component({
   selector: 'app-question',
-  imports: [NgFor],
+  imports: [NgFor, ResponseModalComponent],
   templateUrl: './question.component.html',
-  styleUrl: './question.component.css'
+  styleUrls: ['./question.component.css']
 })
 export class QuestionComponent {
   // then I want to display a message if the answer is correct or incorrect
   // then I want to display the next question if they got it right
   // if they got it wrong, I want to display the correct answer, tell them the game is over and ask if they want to play again
   // if they want to play again, I want to reset the game and start over
+
+  // State
+  // ********************
+
+  questionCount = 1;
+  isQuestionAnswered = false;
+  currentQuestion: any;
+  shuffledAnswers: string[] = [];
+  selectedAnswer: string | null = null;
+  showModal = false;
+  modalTitle = '';
+  modalMessage = '';
 
   // Methods
   // ********************
@@ -69,24 +82,32 @@ export class QuestionComponent {
 
   checkAnswer() {
     if (this.selectedAnswer === this.currentQuestion.correctAnswer) {
-      console.log("Correct!");
+      this.modalTitle = 'Correct!!!';
+      this.modalMessage = this.currentQuestion.statement;
+      this.showModal = true;
       this.questionCount++;
-      this.getQuestion();
     } else {
-      console.log("Incorrect!");
-      console.log("Correct Answer:", this.currentQuestion.correctAnswer);
+      this.modalTitle = 'Incorrect!!!';
+      this.modalMessage = `The correct answer was: ${this.currentQuestion.correctAnswer}. ${this.currentQuestion.statement}`;
+      this.showModal = true;
     }
 
     this.selectedAnswer = null;
   }
 
-  // Data/state
-  // ********************
+  nextQuestion() {
+    this.showModal = false;
+    this.getQuestion();
+  }
 
-  questionCount = 1;
-  currentQuestion: any;
-  shuffledAnswers: string[] = [];
-  selectedAnswer: string | null = null;
+  resetGame() {
+    this.showModal = false;
+    this.questionCount = 1;
+    this.getQuestion();
+  }
+
+  // Data
+  // ********************
 
   firstGradeQuestions = [
     {

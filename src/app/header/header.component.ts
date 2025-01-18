@@ -10,6 +10,7 @@ import { NgIf } from '@angular/common';
 })
 export class HeaderComponent {
   isGameStarted = false;
+  isQuestionAnswered = false;
   
   startGame() {
     this.isGameStarted = true;
