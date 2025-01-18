@@ -14,6 +14,58 @@ export class QuestionComponent {
   // 1st question will be a random question from 1st grade
   // 2nd question will be a random question from 2nd grade etc through 5th grade
   // 6th question will be from the API
+  questionCount = 1;
+  currentQuestion: any;
+
+  ngOnInit() {
+    this.getQuestion();
+  }
+
+  getQuestion() {
+    let questionPool = [];
+
+    switch (this.questionCount) {
+      case 1:
+        questionPool = this.firstGradeQuestions;
+        break;
+      case 2:
+        questionPool = this.secondGradeQuestions;
+        break;
+      case 3:
+        questionPool = this.thirdGradeQuestions;
+        break;
+      case 4:
+        questionPool = this.fourthGradeQuestions;
+        break;
+      case 5:
+        questionPool = this.fifthGradeQuestions;
+        break;
+      default:
+        console.log("No more questions.");
+        return;
+    }
+
+    const randomIndex = Math.floor(Math.random() * questionPool.length);
+    this.currentQuestion = questionPool[randomIndex];
+    console.log("current question:", this.currentQuestion);
+  }
+
+  getAnswers() {
+    const answers = [
+      this.currentQuestion.correctAnswer,
+      ...this.currentQuestion.incorrectAnswers
+    ];
+
+    return this.shuffle(answers);
+  }
+
+  shuffle(array: any[]): any[] {
+    for (let i = array.length - 1; i > 0; i--) {
+      const randomIndex = Math.floor(Math.random() * (i + 1)); // Generate a random index
+      [array[i], array[randomIndex]] = [array[randomIndex], array[i]]; // Swap elements
+    }
+    return array;
+  }
 
   firstGradeQuestions = [
     {
