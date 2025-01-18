@@ -5,7 +5,7 @@
     <div class="modal-actions">
       <button (click)="close()">Home</button>
       <button *ngIf="title === 'Correct!!!'" (click)="next()">Next Question</button>
-      <button *ngIf="title === 'Incorrect!!!'" (click)="close()">Play Again</button>
+      <button *ngIf="title === 'Incorrect!!!'" (click)="newGame()">Play Again</button>
     </div>
   </div>
 </div>

@@ -22,6 +22,11 @@ export class ResponseModalComponent {
     this.onClose.emit();
   }
 
+  newGame() {
+    this.router.navigate(['/game']);
+    this.onNext.emit();
+  }
+
   next() {
     this.onNext.emit();
   }
