@@ -1,7 +1,7 @@
 <div class="modal" *ngIf="showModal">
   <div class="modal-content">
     <h2>{{ title }}</h2>
-    <p>{{ message }}</p>
+    <p class="modal-message">{{ message }}</p>
     <div class="modal-actions">
       <button (click)="close()">Home</button>
       <button *ngIf="title === 'Correct!!!'" (click)="next()">Next Question</button>
