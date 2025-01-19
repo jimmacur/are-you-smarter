@@ -33,6 +33,12 @@ export class QuestionComponent {
     this.getQuestion();
   }
 
+  decodeHtmlEntities(encodedString: string): string {
+    const textarea = document.createElement('textarea');
+    textarea.innerHTML = encodedString;
+    return textarea.value;
+  }
+
   getQuestion() {
     if (this.questionCount === 6) {
       this.headerText = 'Are you smarter than a 6th grader?';
@@ -41,10 +47,12 @@ export class QuestionComponent {
         const apiQuestion = response.results[0];
   
         this.currentQuestion = {
-          question: apiQuestion.question.replace(/&amp;/g, '&'),
-          correctAnswer: apiQuestion.correct_answer,
-          incorrectAnswers: apiQuestion.incorrect_answers,
-          statement: `The correct answer is: ${apiQuestion.correct_answer}.`
+          question: this.decodeHtmlEntities(apiQuestion.question), 
+          correctAnswer: this.decodeHtmlEntities(apiQuestion.correct_answer), 
+          incorrectAnswers: apiQuestion.incorrect_answers.map((answer: string) =>
+            this.decodeHtmlEntities(answer)
+          ),
+          statement: `The correct answer is: ${this.decodeHtmlEntities(apiQuestion.correct_answer)}.`
         };
   
         this.shuffledAnswers = this.shuffle([
