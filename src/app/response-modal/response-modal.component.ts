@@ -12,6 +12,7 @@ export class ResponseModalComponent {
   @Input() showModal = false;
   @Input() title = "";
   @Input() message = "";
+  @Input() statement?: string;
   @Output() onClose = new EventEmitter<void>();
   @Output() onNext = new EventEmitter<void>();
   @Output() onReset = new EventEmitter<void>();

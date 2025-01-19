@@ -52,7 +52,6 @@ export class QuestionComponent {
           incorrectAnswers: apiQuestion.incorrect_answers.map((answer: string) =>
             this.decodeHtmlEntities(answer)
           ),
-          statement: `The correct answer is: ${this.decodeHtmlEntities(apiQuestion.correct_answer)}.`
         };
   
         this.shuffledAnswers = this.shuffle([
@@ -117,22 +116,24 @@ export class QuestionComponent {
   checkAnswer() {
     if (this.selectedAnswer === this.currentQuestion.correctAnswer) {
       if (this.questionCount === 6) {
-        // Player has won the game
         this.modalTitle = 'You Win!!!';
         this.modalMessage = 'Congratulations, you are smarter than a 6th grader!';
         this.isGameComplete = true;
         this.showModal = true;
       } else {
-        // Correct answer for questions 1-5
         this.modalTitle = 'Correct!!!';
         this.modalMessage = this.currentQuestion.statement;
         this.showModal = true;
         this.questionCount++;
       }
     } else {
-      // Incorrect answer
       this.modalTitle = 'Incorrect!!!';
-      this.modalMessage = `The correct answer was: ${this.currentQuestion.correctAnswer}. ${this.currentQuestion.statement}`;
+      this.modalMessage = `The correct answer was: ${this.currentQuestion.correctAnswer}.`;
+    
+      if (this.currentQuestion.statement) {
+        this.modalMessage += ` ${this.currentQuestion.statement}`;
+      }
+    
       this.showModal = true;
     }
 

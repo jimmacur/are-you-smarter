@@ -2,6 +2,7 @@
   <div class="modal-content">
     <h2>{{ title }}</h2>
     <p class="modal-message">{{ message }}</p>
+    <p class="modal-statement" *ngIf="statement">{{ statement }}</p>
     <div class="modal-actions">
       <button (click)="close()">Home</button>
       <button *ngIf="title === 'Correct!!!'" (click)="next()">Next Question</button>
