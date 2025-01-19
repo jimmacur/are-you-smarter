@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { NgFor } from '@angular/common';
 import {ResponseModalComponent} from '../response-modal/response-modal.component';
@@ -11,7 +12,6 @@ import {ResponseModalComponent} from '../response-modal/response-modal.component
 export class QuestionComponent {
 
   // State
-  // ********************
 
   questionCount = 1;
   isQuestionAnswered = false;
@@ -22,54 +22,75 @@ export class QuestionComponent {
   modalTitle = '';
   modalMessage = '';
   headerText = 'Are you smarter than a 1st grader?';
+  apiUrl = 'https://opentdb.com/api.php?amount=1&category=27&difficulty=medium&type=multiple'
 
+  constructor(private http: HttpClient) {}
 
   // Methods
-  // ********************
 
   ngOnInit() {
     this.getQuestion();
   }
 
   getQuestion() {
-    let questionPool = [];
-    let gradeLevel = "";
-
-    switch (this.questionCount) {
-      case 1:
-        questionPool = this.firstGradeQuestions;
-        gradeLevel = "1st";
-        break;
-      case 2:
-        questionPool = this.secondGradeQuestions;
-        gradeLevel = "2nd";
-        break;
-      case 3:
-        questionPool = this.thirdGradeQuestions;
-        gradeLevel = "3rd";
-        break;
-      case 4:
-        questionPool = this.fourthGradeQuestions;
-        gradeLevel = "4th";
-        break;
-      case 5:
-        questionPool = this.fifthGradeQuestions;
-        gradeLevel = "5th";
-        break;
-      default:
-        console.log("No more questions.");
-        return;
+    if (this.questionCount === 6) {
+      this.headerText = 'Are you smarter than a 6th grader?';
+  
+      this.http.get<any>(this.apiUrl).subscribe((response) => {
+        const apiQuestion = response.results[0];
+  
+        this.currentQuestion = {
+          question: apiQuestion.question.replace(/&amp;/g, '&'),
+          correctAnswer: apiQuestion.correct_answer,
+          incorrectAnswers: apiQuestion.incorrect_answers,
+          statement: `The correct answer is: ${apiQuestion.correct_answer}.`
+        };
+  
+        this.shuffledAnswers = this.shuffle([
+          this.currentQuestion.correctAnswer,
+          ...this.currentQuestion.incorrectAnswers
+        ]);
+      });
+    } else {
+      let questionPool = [];
+      let gradeLevel = '';
+  
+      switch (this.questionCount) {
+        case 1:
+          questionPool = this.firstGradeQuestions;
+          gradeLevel = '1st';
+          break;
+        case 2:
+          questionPool = this.secondGradeQuestions;
+          gradeLevel = '2nd';
+          break;
+        case 3:
+          questionPool = this.thirdGradeQuestions;
+          gradeLevel = '3rd';
+          break;
+        case 4:
+          questionPool = this.fourthGradeQuestions;
+          gradeLevel = '4th';
+          break;
+        case 5:
+          questionPool = this.fifthGradeQuestions;
+          gradeLevel = '5th';
+          break;
+        default:
+          console.log('No more questions.');
+          return;
+      }
+  
+      this.headerText = `Are you smarter than a ${gradeLevel} grader?`;
+  
+      const randomIndex = Math.floor(Math.random() * questionPool.length);
+      this.currentQuestion = questionPool[randomIndex];
+  
+      this.shuffledAnswers = this.shuffle([
+        this.currentQuestion.correctAnswer,
+        ...this.currentQuestion.incorrectAnswers
+      ]);
     }
-
-    this.headerText = `Are you smarter than a ${gradeLevel} grader?`;
-
-    const randomIndex = Math.floor(Math.random() * questionPool.length);
-    this.currentQuestion = questionPool[randomIndex];
-
-    this.shuffledAnswers = this.shuffle([
-      this.currentQuestion.correctAnswer,
-      ...this.currentQuestion.incorrectAnswers
-    ]);
   }
 
   shuffle(array: any[]): any[] {
@@ -111,7 +132,6 @@ export class QuestionComponent {
   }
 
   // Data
-  // ********************
 
   firstGradeQuestions = [
     {

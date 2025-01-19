@@ -14,6 +14,7 @@ export class ResponseModalComponent {
   @Input() message = "";
   @Output() onClose = new EventEmitter<void>();
   @Output() onNext = new EventEmitter<void>();
+  @Output() onReset = new EventEmitter<void>();
 
   constructor(private router: Router) {}
 
@@ -23,8 +24,7 @@ export class ResponseModalComponent {
   }
 
   newGame() {
-    this.router.navigate(['/game']);
-    this.onNext.emit();
+    this.onReset.emit();
   }
 
   next() {
