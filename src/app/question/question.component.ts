@@ -21,6 +21,7 @@ export class QuestionComponent {
   showModal = false;
   modalTitle = '';
   modalMessage = '';
+  isGameComplete = false;
   headerText = 'Are you smarter than a 1st grader?';
   apiUrl = 'https://opentdb.com/api.php?amount=1&category=27&difficulty=medium&type=multiple'
 
@@ -107,11 +108,21 @@ export class QuestionComponent {
 
   checkAnswer() {
     if (this.selectedAnswer === this.currentQuestion.correctAnswer) {
-      this.modalTitle = 'Correct!!!';
-      this.modalMessage = this.currentQuestion.statement;
-      this.showModal = true;
-      this.questionCount++;
+      if (this.questionCount === 6) {
+        // Player has won the game
+        this.modalTitle = 'You Win!!!';
+        this.modalMessage = 'Congratulations, you are smarter than a 6th grader!';
+        this.isGameComplete = true;
+        this.showModal = true;
+      } else {
+        // Correct answer for questions 1-5
+        this.modalTitle = 'Correct!!!';
+        this.modalMessage = this.currentQuestion.statement;
+        this.showModal = true;
+        this.questionCount++;
+      }
     } else {
+      // Incorrect answer
       this.modalTitle = 'Incorrect!!!';
       this.modalMessage = `The correct answer was: ${this.currentQuestion.correctAnswer}. ${this.currentQuestion.statement}`;
       this.showModal = true;
@@ -128,6 +139,7 @@ export class QuestionComponent {
   resetGame() {
     this.showModal = false;
     this.questionCount = 1;
+    this.isGameComplete = false;
     this.getQuestion();
   }
 
