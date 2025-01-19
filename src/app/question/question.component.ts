@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { NgFor } from '@angular/common';
 import {ResponseModalComponent} from '../response-modal/response-modal.component';
@@ -9,13 +10,8 @@ import {ResponseModalComponent} from '../response-modal/response-modal.component
   styleUrls: ['./question.component.css']
 })
 export class QuestionComponent {
-  // then I want to display a message if the answer is correct or incorrect
-  // then I want to display the next question if they got it right
-  // if they got it wrong, I want to display the correct answer, tell them the game is over and ask if they want to play again
-  // if they want to play again, I want to reset the game and start over
 
   // State
-  // ********************
 
   questionCount = 1;
   isQuestionAnswered = false;
@@ -25,47 +21,84 @@ export class QuestionComponent {
   showModal = false;
   modalTitle = '';
   modalMessage = '';
+  isGameComplete = false;
+  headerText = 'Are you smarter than a 1st grader?';
+  apiUrl = 'https://opentdb.com/api.php?amount=1&category=27&difficulty=medium&type=multiple'
+
+  constructor(private http: HttpClient) {}
 
   // Methods
-  // ********************
 
   ngOnInit() {
     this.getQuestion();
   }
 
+  decodeHtmlEntities(encodedString: string): string {
+    const textarea = document.createElement('textarea');
+    textarea.innerHTML = encodedString;
+    return textarea.value;
+  }
+
   getQuestion() {
-    let questionPool = [];
-
-    switch (this.questionCount) {
-      case 1:
-        questionPool = this.firstGradeQuestions;
-        break;
-      case 2:
-        questionPool = this.secondGradeQuestions;
-        break;
-      case 3:
-        questionPool = this.thirdGradeQuestions;
-        break;
-      case 4:
-        questionPool = this.fourthGradeQuestions;
-        break;
-      case 5:
-        questionPool = this.fifthGradeQuestions;
-        break;
-      default:
-        console.log("No more questions.");
-        return;
+    if (this.questionCount === 6) {
+      this.headerText = 'Are you smarter than a 6th grader?';
+  
+      this.http.get<any>(this.apiUrl).subscribe((response) => {
+        const apiQuestion = response.results[0];
+  
+        this.currentQuestion = {
+          question: this.decodeHtmlEntities(apiQuestion.question), 
+          correctAnswer: this.decodeHtmlEntities(apiQuestion.correct_answer), 
+          incorrectAnswers: apiQuestion.incorrect_answers.map((answer: string) =>
+            this.decodeHtmlEntities(answer)
+          ),
+        };
+  
+        this.shuffledAnswers = this.shuffle([
+          this.currentQuestion.correctAnswer,
+          ...this.currentQuestion.incorrectAnswers
+        ]);
+      });
+    } else {
+      let questionPool = [];
+      let gradeLevel = '';
+  
+      switch (this.questionCount) {
+        case 1:
+          questionPool = this.firstGradeQuestions;
+          gradeLevel = '1st';
+          break;
+        case 2:
+          questionPool = this.secondGradeQuestions;
+          gradeLevel = '2nd';
+          break;
+        case 3:
+          questionPool = this.thirdGradeQuestions;
+          gradeLevel = '3rd';
+          break;
+        case 4:
+          questionPool = this.fourthGradeQuestions;
+          gradeLevel = '4th';
+          break;
+        case 5:
+          questionPool = this.fifthGradeQuestions;
+          gradeLevel = '5th';
+          break;
+        default:
+          console.log('No more questions.');
+          return;
+      }
+  
+      this.headerText = `Are you smarter than a ${gradeLevel} grader?`;
+  
+      const randomIndex = Math.floor(Math.random() * questionPool.length);
+      this.currentQuestion = questionPool[randomIndex];
+  
+      this.shuffledAnswers = this.shuffle([
+        this.currentQuestion.correctAnswer,
+        ...this.currentQuestion.incorrectAnswers
+      ]);
     }
-
-    const randomIndex = Math.floor(Math.random() * questionPool.length);
-    this.currentQuestion = questionPool[randomIndex];
-    console.log("current question:", this.currentQuestion);
-
-    this.shuffledAnswers = this.shuffle([
-      this.currentQuestion.correctAnswer,
-      ...this.currentQuestion.incorrectAnswers
-    ]);
-    console.log("Shuffled Answers:", this.shuffledAnswers);
   }
 
   shuffle(array: any[]): any[] {
@@ -82,13 +115,25 @@ export class QuestionComponent {
 
   checkAnswer() {
     if (this.selectedAnswer === this.currentQuestion.correctAnswer) {
-      this.modalTitle = 'Correct!!!';
-      this.modalMessage = this.currentQuestion.statement;
-      this.showModal = true;
-      this.questionCount++;
+      if (this.questionCount === 6) {
+        this.modalTitle = 'You Win!!!';
+        this.modalMessage = 'Congratulations, you are smarter than a 6th grader!';
+        this.isGameComplete = true;
+        this.showModal = true;
+      } else {
+        this.modalTitle = 'Correct!!!';
+        this.modalMessage = this.currentQuestion.statement;
+        this.showModal = true;
+        this.questionCount++;
+      }
     } else {
       this.modalTitle = 'Incorrect!!!';
-      this.modalMessage = `The correct answer was: ${this.currentQuestion.correctAnswer}. ${this.currentQuestion.statement}`;
+      this.modalMessage = `The correct answer was: ${this.currentQuestion.correctAnswer}.`;
+    
+      if (this.currentQuestion.statement) {
+        this.modalMessage += ` ${this.currentQuestion.statement}`;
+      }
+    
       this.showModal = true;
     }
 
@@ -103,11 +148,11 @@ export class QuestionComponent {
   resetGame() {
     this.showModal = false;
     this.questionCount = 1;
+    this.isGameComplete = false;
     this.getQuestion();
   }
 
   // Data
-  // ********************
 
   firstGradeQuestions = [
     {

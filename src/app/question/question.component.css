@@ -1,19 +1,31 @@
-.container {
+.question {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.background {
   background-color:rgb(108, 179, 251);
   padding: 20px;
   border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
 
 .question-header {
   text-decoration: underline;
+  font-size: 36px;
 }
 
 .question-container {
   background-color:rgb(187, 199, 251);
   padding: 20px;
   display: flex;
+  font-size: 20px;
   flex-direction: column;
   align-items: center;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
 
 .answers-container button {
@@ -22,7 +34,7 @@
   margin: 10px;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 24px;
   transition: background-color 0.3s ease;
 }
 
@@ -48,7 +60,7 @@
   margin: 10px;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 24px;
   transition: background-color 0.3s ease;
   width: fit-content;
 }

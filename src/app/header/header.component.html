@@ -1,8 +1,0 @@
-<header class="header">
-  <img src="assets/are-you-smarter.png" alt="Are You Smarter?" class="logo">
-  <h1 class="title">Are You Smarter Than a 6th Grader?</h1>
-  <button class="start-button" *ngIf="!isGameStarted" (click)="startGame()">Start Game</button>
-
-  <app-question *ngIf="isGameStarted"></app-question>
-  
-</header>
