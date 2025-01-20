@@ -41,11 +41,11 @@ describe('AboutComponent', () => {
     expect(location.path()).toBe('');
   });
 
-  it("should render the title 'How to Play"), () => {
+  it("should render the title 'How to Play'", () => {
     const compiled = fixture.nativeElement as HTMLElement;
     const title = compiled.querySelector('h1');
     expect(title?.textContent).toBe('How to Play');
-  }
+  });
 
   it('should render all instructions', () => {
     const compiled = fixture.nativeElement as HTMLElement;
