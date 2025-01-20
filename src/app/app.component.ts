@@ -8,4 +8,6 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./app.component.css'],
   imports: [RouterModule]
 })
-export class AppComponent {}
+export class AppComponent {
+  title = 'are-you-smarter';
+}
