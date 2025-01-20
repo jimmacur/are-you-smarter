@@ -41,64 +41,64 @@ export class QuestionComponent {
 
   getQuestion() {
     if (this.questionCount === 6) {
-      this.headerText = 'Are you smarter than a 6th grader?';
-  
-      this.http.get<any>(this.apiUrl).subscribe((response) => {
-        const apiQuestion = response.results[0];
-  
-        this.currentQuestion = {
-          question: this.decodeHtmlEntities(apiQuestion.question), 
-          correctAnswer: this.decodeHtmlEntities(apiQuestion.correct_answer), 
-          incorrectAnswers: apiQuestion.incorrect_answers.map((answer: string) =>
-            this.decodeHtmlEntities(answer)
-          ),
-        };
-  
-        this.shuffledAnswers = this.shuffle([
-          this.currentQuestion.correctAnswer,
-          ...this.currentQuestion.incorrectAnswers
-        ]);
-      });
+      this.handleFinalQuestion();
     } else {
-      let questionPool = [];
-      let gradeLevel = '';
+      this.handleGradeLevelQuestion();
+    }
+  }
+
+  private handleFinalQuestion() {
+    this.headerText = 'Are you smarter than a 6th grader?';
   
-      switch (this.questionCount) {
-        case 1:
-          questionPool = this.firstGradeQuestions;
-          gradeLevel = '1st';
-          break;
-        case 2:
-          questionPool = this.secondGradeQuestions;
-          gradeLevel = '2nd';
-          break;
-        case 3:
-          questionPool = this.thirdGradeQuestions;
-          gradeLevel = '3rd';
-          break;
-        case 4:
-          questionPool = this.fourthGradeQuestions;
-          gradeLevel = '4th';
-          break;
-        case 5:
-          questionPool = this.fifthGradeQuestions;
-          gradeLevel = '5th';
-          break;
-        default:
-          console.log('No more questions.');
-          return;
-      }
+    this.http.get<any>(this.apiUrl).subscribe((response) => {
+      const apiQuestion = response.results[0];
   
-      this.headerText = `Are you smarter than a ${gradeLevel} grader?`;
-  
-      const randomIndex = Math.floor(Math.random() * questionPool.length);
-      this.currentQuestion = questionPool[randomIndex];
-  
+      this.currentQuestion = this.createQuestionObject(apiQuestion);
       this.shuffledAnswers = this.shuffle([
         this.currentQuestion.correctAnswer,
-        ...this.currentQuestion.incorrectAnswers
+        ...this.currentQuestion.incorrectAnswers,
       ]);
+    });
+  }
+  
+  private handleGradeLevelQuestion() {
+    const { questionPool, gradeLevel } = this.getQuestionPoolAndGradeLevel();
+    
+    if (!questionPool.length) {
+      console.log('No more questions.');
+      return;
     }
+  
+    this.headerText = `Are you smarter than a ${gradeLevel} grader?`;
+  
+    const randomIndex = Math.floor(Math.random() * questionPool.length);
+    this.currentQuestion = questionPool[randomIndex];
+  
+    this.shuffledAnswers = this.shuffle([
+      this.currentQuestion.correctAnswer,
+      ...this.currentQuestion.incorrectAnswers,
+    ]);
+  }
+  
+  private getQuestionPoolAndGradeLevel() {
+    switch (this.questionCount) {
+      case 1: return { questionPool: this.firstGradeQuestions, gradeLevel: '1st' };
+      case 2: return { questionPool: this.secondGradeQuestions, gradeLevel: '2nd' };
+      case 3: return { questionPool: this.thirdGradeQuestions, gradeLevel: '3rd' };
+      case 4: return { questionPool: this.fourthGradeQuestions, gradeLevel: '4th' };
+      case 5: return { questionPool: this.fifthGradeQuestions, gradeLevel: '5th' };
+      default: return { questionPool: [], gradeLevel: '' };
+    }
+  }
+  
+  private createQuestionObject(apiQuestion: any) {
+    return {
+      question: this.decodeHtmlEntities(apiQuestion.question),
+      correctAnswer: this.decodeHtmlEntities(apiQuestion.correct_answer),
+      incorrectAnswers: apiQuestion.incorrect_answers.map((answer: string) =>
+        this.decodeHtmlEntities(answer)
+      ),
+    };
   }
 
   shuffle(array: any[]): any[] {
