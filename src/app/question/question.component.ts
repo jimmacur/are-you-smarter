@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { NgFor } from '@angular/common';
-import {ResponseModalComponent} from '../response-modal/response-modal.component';
+import { ResponseModalComponent } from '../response-modal/response-modal.component';
+import { TotalWinningsComponent } from '../total-winnings/total-winnings.component';
 import { firstGradeQuestions, secondGradeQuestions, thirdGradeQuestions, fourthGradeQuestions, fifthGradeQuestions } from '../shared/question-pools';
 
 @Component({
   selector: 'app-question',
-  imports: [NgFor, ResponseModalComponent],
+  imports: [NgFor, ResponseModalComponent, TotalWinningsComponent],
   templateUrl: './question.component.html',
   styleUrls: ['./question.component.css']
 })
@@ -14,6 +15,7 @@ export class QuestionComponent {
 
   // State
 
+  currentWinnings = 0;
   questionCount = 1;
   isQuestionAnswered = false;
   currentQuestion: any;
@@ -29,6 +31,10 @@ export class QuestionComponent {
   constructor(private http: HttpClient) {}
 
   // Methods
+
+  updateWinnings(amount: number) {
+    this.currentWinnings += amount;
+  }
 
   ngOnInit() {
     this.getQuestion();
