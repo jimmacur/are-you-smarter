@@ -115,29 +115,34 @@ export class QuestionComponent {
 
   checkAnswer() {
     if (this.selectedAnswer === this.currentQuestion.correctAnswer) {
-      if (this.questionCount === 6) {
-        this.modalTitle = 'You Win!!!';
-        this.modalMessage = 'Congratulations, you are smarter than a 6th grader!';
-        this.isGameComplete = true;
-        this.showModal = true;
-      } else {
-        this.modalTitle = 'Correct!!!';
-        this.modalMessage = this.currentQuestion.statement;
-        this.showModal = true;
-        this.questionCount++;
-      }
+      this.handleCorrectAnswer();
     } else {
-      this.modalTitle = 'Incorrect!!!';
-      this.modalMessage = `The correct answer was: ${this.currentQuestion.correctAnswer}.`;
-    
-      if (this.currentQuestion.statement) {
-        this.modalMessage += ` ${this.currentQuestion.statement}`;
-      }
-    
-      this.showModal = true;
+      this.handleIncorrectAnswer();
     }
-
+  
     this.selectedAnswer = null;
+  }
+
+  private handleCorrectAnswer() {
+    if (this.questionCount === 6) {
+      this.modalTitle = 'You Win!!!';
+      this.modalMessage = 'Congratulations, you are smarter than a 6th grader!';
+      this.isGameComplete = true;
+    } else {
+      this.modalTitle = 'Correct!!!';
+      this.modalMessage = this.currentQuestion.statement;
+      this.questionCount++;
+    }
+    this.showModal = true;
+  }
+  
+  private handleIncorrectAnswer() {
+    this.modalTitle = 'Incorrect!!!';
+    this.modalMessage = `The correct answer was: ${this.currentQuestion.correctAnswer}.`;
+    if (this.currentQuestion.statement) {
+      this.modalMessage += ` ${this.currentQuestion.statement}`;
+    }
+    this.showModal = true;
   }
 
   nextQuestion() {
