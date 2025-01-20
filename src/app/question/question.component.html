@@ -19,8 +19,8 @@
       >
         Submit
       </button>
+      <app-total-winnings class="total-winnings" [totalWinnings]="currentWinnings"></app-total-winnings>
     </div>
-    <app-total-winnings [totalWinnings]="currentWinnings"></app-total-winnings>
     <app-response-modal 
       [showModal]="showModal"
       [title]="modalTitle"

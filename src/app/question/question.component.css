@@ -65,3 +65,12 @@
   width: fit-content;
 }
 
+.total-winnings {
+  font-size: 24px;
+  margin-top: 10px;
+  padding: 10px;
+  background-color:rgb(253, 166, 166);
+  align-self: flex-start;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}
