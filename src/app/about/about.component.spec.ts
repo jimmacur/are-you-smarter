@@ -40,4 +40,34 @@ describe('AboutComponent', () => {
 
     expect(location.path()).toBe('');
   });
+
+  it("should render the title 'How to Play"), () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    const title = compiled.querySelector('h1');
+    expect(title?.textContent).toBe('How to Play');
+  }
+
+  it('should render all instructions', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    const instructions = compiled.querySelectorAll('.instructions ul li');
+    const expectedInstructions = [
+      'Answer questions of increasing difficulty, starting from 1st grade and progressing to 6th grade.',
+      'Each correct answer earns you points and gets you closer to the final challenge..',
+      'If you answer incorrectly, the game ends, and you\'ll have to start over.',
+      'If you answer incorrectly, the game ends, and you\'ll have to start over.',
+      'The final 6th-grade question is the ultimate challenge—can you ace it?'
+    ];
+
+    expect(instructions.length).toBe(expectedInstructions.length);
+    instructions.forEach((li, index) => {
+      expect(li.textContent?.trim()).toBe(expectedInstructions[index]);
+    });
+  });
+  
+  it('should have a Home button with correct text', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    const homeButton = compiled.querySelector('button.about-button');
+    expect(homeButton).toBeTruthy();
+    expect(homeButton?.textContent).toBe('Home');
+  });
 });
