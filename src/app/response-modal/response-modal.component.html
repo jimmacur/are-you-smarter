@@ -4,7 +4,7 @@
     <p class="modal-message">{{ message }}</p>
     <p class="modal-statement" *ngIf="statement">{{ statement }}</p>
     <div class="modal-actions">
-      <button (click)="close()">Home</button>
+      <button routerLink="/home">Home</button>
       <button *ngIf="title === 'Correct!!!'" (click)="next()">Next Question</button>
       <button *ngIf="title === 'Incorrect!!!'" (click)="newGame()">Play Again</button>
     </div>
