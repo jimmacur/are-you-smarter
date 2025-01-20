@@ -20,4 +20,10 @@ describe('TotalWinningsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should display the initial total winnings as $0', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    const winningsElement = compiled.querySelector('.total-winnings');
+    expect(winningsElement?.textContent).toContain('$0');
+  });
 });

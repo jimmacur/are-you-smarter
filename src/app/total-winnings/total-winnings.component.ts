@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './total-winnings.component.css'
 })
 export class TotalWinningsComponent {
-
+  totalWinnings: number = 0;
 }
