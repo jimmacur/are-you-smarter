@@ -1,19 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { NgFor } from '@angular/common';
-import {ResponseModalComponent} from '../response-modal/response-modal.component';
+import { ResponseModalComponent } from '../response-modal/response-modal.component';
+import { TotalWinningsComponent } from '../total-winnings/total-winnings.component';
 import { firstGradeQuestions, secondGradeQuestions, thirdGradeQuestions, fourthGradeQuestions, fifthGradeQuestions } from '../shared/question-pools';
 
 @Component({
   selector: 'app-question',
-  imports: [NgFor, ResponseModalComponent],
+  imports: [NgFor, ResponseModalComponent, TotalWinningsComponent],
   templateUrl: './question.component.html',
   styleUrls: ['./question.component.css']
 })
 export class QuestionComponent {
 
   // State
-
+  currentWinnings = 0;
   questionCount = 1;
   isQuestionAnswered = false;
   currentQuestion: any;
@@ -29,6 +30,10 @@ export class QuestionComponent {
   constructor(private http: HttpClient) {}
 
   // Methods
+
+  updateWinnings(amount: number) {
+    this.currentWinnings = amount;
+  }
 
   ngOnInit() {
     this.getQuestion();
@@ -91,7 +96,7 @@ export class QuestionComponent {
       default: return { questionPool: [], gradeLevel: '' };
     }
   }
-  
+
   private createQuestionObject(apiQuestion: any) {
     return {
       question: this.decodeHtmlEntities(apiQuestion.question),
@@ -125,23 +130,38 @@ export class QuestionComponent {
   }
 
   private handleCorrectAnswer() {
+    const winnings = this.calculateWinnings(this.questionCount);
+    this.updateWinnings(winnings);
+    
     if (this.questionCount === 6) {
       this.modalTitle = 'You Win!!!';
-      this.modalMessage = 'Congratulations, you are smarter than a 6th grader!';
+      this.modalMessage = `Congratulations, you are smarter than a 6th grader!<br>Your total winnings are $${this.currentWinnings}.`;
       this.isGameComplete = true;
     } else {
       this.modalTitle = 'Correct!!!';
-      this.modalMessage = this.currentQuestion.statement;
+      this.modalMessage = this.currentQuestion.statement + `<br>You have won $${this.currentWinnings} so far.`;
       this.questionCount++;
     }
     this.showModal = true;
   }
+
+  private calculateWinnings(grade: number): number {
+    switch (grade) {
+      case 1: return 100;
+      case 2: return 250;
+      case 3: return 500;
+      case 4: return 1000;
+      case 5: return 5000;
+      case 6: return 10000;
+      default: return 0;
+    }
+  }
   
   private handleIncorrectAnswer() {
     this.modalTitle = 'Incorrect!!!';
-    this.modalMessage = `The correct answer was: ${this.currentQuestion.correctAnswer}.`;
+    this.modalMessage = `The correct answer was: ${this.currentQuestion.correctAnswer}.` + `<br>You won $${this.currentWinnings}.`;
     if (this.currentQuestion.statement) {
-      this.modalMessage += ` ${this.currentQuestion.statement}`;
+      this.modalMessage += ` ${this.currentQuestion.statement}` + `<br>You won $${this.currentWinnings}.`;
     }
     this.showModal = true;
   }
@@ -156,5 +176,6 @@ export class QuestionComponent {
     this.questionCount = 1;
     this.isGameComplete = false;
     this.getQuestion();
+    this.updateWinnings(0);
   }
 }
