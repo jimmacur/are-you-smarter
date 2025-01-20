@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter, Router, RouterModule } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { Location } from '@angular/common';
 
