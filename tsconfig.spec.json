@@ -2,15 +2,15 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
-    "types": [
-      "jest",
-      "node"
-    ],
-    "module": "commonjs",
-    "esModuleInterop": true
+    "types": ["jasmine"],
+    "target": "es2020",
+    "module": "es2020",
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*.spec.ts",
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
+    "src/test.ts",
+    "src/polyfills.ts"
   ]
 }
