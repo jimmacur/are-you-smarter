@@ -26,4 +26,13 @@ describe('TotalWinningsComponent', () => {
     const winningsElement = compiled.querySelector('.total-winnings');
     expect(winningsElement?.textContent).toContain('$0');
   });
+
+  it('should update the total winnings when the value changes', () => {
+    component.totalWinnings = 100;
+    fixture.detectChanges();
+  
+    const compiled = fixture.nativeElement as HTMLElement;
+    const winningsElement = compiled.querySelector('.total-winnings');
+    expect(winningsElement?.textContent).toContain('$100');
+  });
 });
