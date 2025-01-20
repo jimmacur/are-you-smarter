@@ -6,7 +6,7 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 
 Are You Smarter Than a 6th Grader is an interactive quiz application inspired by the popular game show. Players are challenged with progressively difficult questions from 1st to 6th grade, with the final question sourced dynamically via an API call to the [Open Trivia Database](https://opentdb.com/).
 
-This application was built using Angular, TypeScript, and Jest, with the primary goal of enhancing skills in these technologies while creating an engaging and educational game.
+This application was built using Angular, TypeScript, and Karma, with the primary goal of enhancing skills in these technologies while creating an engaging and educational game.
 
 ![Are-you-smart-still](./public/assets/are-you-smarter.gif)
 
@@ -35,7 +35,7 @@ This application was built using Angular, TypeScript, and Jest, with the primary
 
 ### Unit Testing
 
-- Jest is used for robust unit testing, ensuring code reliability and minimizing bugs
+- Karma is used for robust unit testing, ensuring code reliability and minimizing bugs
 
 ### CSS Styling
 
@@ -68,9 +68,7 @@ What Makes Angular Special
 
 [![CSS][CSS]][CSS-url]
 
-[![Cypress][Cypress]][Cypress-url]
-
-[![Jest][Jest]][Jest-url]
+[![Karma][Karma]][Karma-url]
 
 ## Development server
 
@@ -109,8 +107,5 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 [CSS]: https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white
 [CSS-url]: https://developer.mozilla.org/en-US/docs/Web/CSS
 
-[Cypress]: https://img.shields.io/badge/Cypress-17202C?style=for-the-badge&logo=cypress&logoColor=white
-[Cypress-url]: https://www.cypress.io/
-
-[Jest]: https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white
-[Jest-url]: https://jestjs.io/
+[Karma]: https://img.shields.io/badge/Karma-6.4.0-92CC41?style=for-the-badge&logo=npm&logoColor=white
+[Karma-url]: https://karma-runner.github.io/
