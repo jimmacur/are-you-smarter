@@ -60,30 +60,42 @@ describe('QuestionComponent', () => {
     expect(shuffledAnswers.sort()).toEqual(answers.sort());
   });
 
-  it('should handle correct answer', () => {
+  it('should handle correct answer and update winnings', () => {
     component.currentQuestion = { correctAnswer: 'Paris', statement: 'Capital of France' };
     component.selectedAnswer = 'Paris';
+    
     component.checkAnswer();
     expect(component.modalTitle).toBe('Correct!!!');
-    expect(component.modalMessage).toBe('Capital of France');
+    expect(component.modalMessage).toContain('Capital of France');
+    expect(component.modalMessage).toContain('You have won $100 so far.');
     expect(component.showModal).toBeTrue();
     expect(component.questionCount).toBe(2);
+    expect(component.currentWinnings).toBe(100);
   });
 
-  it('should handle incorrect answer', () => {
+  it('should handle incorrect answer and display total winnings', () => {
+    component.questionCount = 3;
+    component.currentWinnings = 500;
     component.currentQuestion = { correctAnswer: 'Paris', statement: 'Capital of France' };
     component.selectedAnswer = 'Berlin';
+
     component.checkAnswer();
+
     expect(component.modalTitle).toBe('Incorrect!!!');
     expect(component.modalMessage).toContain('The correct answer was: Paris.');
+    expect(component.modalMessage).toContain('You won $500.');
     expect(component.showModal).toBeTrue();
+    expect(component.currentWinnings).toBe(500);
   });
 
   it('should reset the game correctly', () => {
+    component.currentWinnings = 1000;
     component.resetGame();
+    
     expect(component.questionCount).toBe(1);
     expect(component.isGameComplete).toBeFalse();
     expect(component.showModal).toBeFalse();
+    expect(component.currentWinnings).toBe(0);
   });
 
   it('should handle next question correctly', () => {

@@ -176,5 +176,6 @@ export class QuestionComponent {
     this.questionCount = 1;
     this.isGameComplete = false;
     this.getQuestion();
+    this.updateWinnings(0);
   }
 }
